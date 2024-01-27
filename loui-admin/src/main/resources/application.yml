@@ -1,0 +1,31 @@
+spring:
+  profiles:
+    active: @profiles.active@
+  threads:
+    virtual:
+      enabled: true
+
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  # token前缀
+  token-prefix: Bearer
+  # token 名称（同时也是 cookie 名称）
+  token-name: Authorization
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: random-128
+  # 是否输出操作日志
+  is-log: false
+
+# 自定义rsa公钥和私钥
+crypto:
+  rsa:
+    pub: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCgVEiyIv0DRNlxlEYk+3GK+ZikekLQRukWMXGaOHc7Xwk041IT4WTMqU5UTMP6obevad8pKJnm0mUmxLAc0Q8leHw5cXeq7C8dXg8NK7WG2oQQrDYhit3YVlUkDrYfgep3JRvCohfbkFj9Vg2+yPjrVhPdDiL9HHP1smsD0X5bIQIDAQAB
+    pri: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKBUSLIi/QNE2XGURiT7cYr5mKR6QtBG6RYxcZo4dztfCTTjUhPhZMypTlRMw/qht69p3ykomebSZSbEsBzRDyV4fDlxd6rsLx1eDw0rtYbahBCsNiGK3dhWVSQOth+B6nclG8KiF9uQWP1WDb7I+OtWE90OIv0cc/WyawPRflshAgMBAAECgYAeCWxNI0zvbdim9LZne0v8U2KLffRCfOZyJ/U2hVmhH97jr6rS2qk9xoJMPM2CiQWWsWkDlv2uRsB4kOTFoU0K1htFBMZ2XFRspowpco4fnyUmcwXIYjmHXlbO1ibN/BKMVzPqNUsBzjGqm2+9nwD/CZ0F1E43cT9gDIHCALQDWQJBANNSuN14BCaVVeSiPQt6ckbs4JtdGMdtXLbnQgi0RHhp1zMngiYKP42hxJk5kaivq0tr0BFaqWLVE7pwfmyO6I8CQQDCOaicGXDAyexGkzgnaYf6Mx1hXeecfitPZu+jufX/xmxIhOxuxFw5sChThwzAPJ0wJN9MLfTouatNN/old3lPAkAFZdWHAqvIeIQLJQG+K1CD80UBcu1RGsAFg/6xzjj5gmqWyemPIy/gZENrTocj8ejEMmrMJq6w8ZRhbMIt77CNAkB/JClozgqOWWBPLs4ilqWJtm40L7mPKtSFLNgQcIpFfgmiS0lOlUHeDZ/IVe6V5NftDSYTgz4AHpKxgMRCRHxnAkEApysQ2wAHhH6Q7QvTMBcm80/ihg06MiEtnBJipgmddh77zrJUWVGea1+1Qvb9NUrjgxTGiV22CAkfZ2odH+QeEw==
