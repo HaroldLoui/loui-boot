@@ -98,7 +98,7 @@ public class SysMenu implements Serializable, FatherSonRelationship {
      */
     @AutoMappings({
         @AutoMapping(targetClass = SysMenuTableVo.class, target = "visible"),
-        @AutoMapping(targetClass = RouteVo.class, target = "meta.hidden", expression = "java(sysMenu.getVisible() == 1)"),
+        @AutoMapping(targetClass = RouteVo.class, target = "meta.hidden", expression = "java(sysMenu.getVisible() == 0)"),
     })
     private Integer visible;
 
