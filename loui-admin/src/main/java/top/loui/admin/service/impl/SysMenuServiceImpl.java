@@ -2,6 +2,7 @@ package top.loui.admin.service.impl;
 
 import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.core.update.UpdateChain;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
@@ -164,6 +165,33 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public SysMenuTableVo form(Long id) {
         SysMenu menu = this.getById(id);
         return converter.convert(menu, SysMenuTableVo.class);
+    }
+
+    /**
+     * 修改菜单
+     */
+    @Override
+    public boolean edit(SysMenuBo bo) {
+        SysMenu entity = converter.convert(bo, SysMenu.class);
+        // 设置父节点ID路径
+        Long parentId = entity.getParentId();
+        entity.setTreePath(buildTreePath(parentId, parentId.toString()));
+        // 保存到数据库
+        return this.updateById(entity);
+    }
+
+    /**
+     * 修改菜单显示状态
+     *
+     * @param menuId  菜单ID
+     * @param visible 显示状态(1:显示;0:隐藏)
+     */
+    @Override
+    public boolean visible(Long menuId, Integer visible) {
+        return UpdateChain.of(SysMenu.class)
+            .set(SYS_MENU.VISIBLE, visible)
+            .where(SYS_MENU.ID.eq(menuId))
+            .update();
     }
 
     /**
