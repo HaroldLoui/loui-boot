@@ -4,10 +4,7 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import top.loui.admin.config.id.MySnowFlakeIdGenerator;
 
 import java.io.Serial;
@@ -21,9 +18,6 @@ import java.time.LocalDateTime;
  * @since 2024-01-24
  */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(value = "sys_dict")
 public class SysDict implements Serializable {
 

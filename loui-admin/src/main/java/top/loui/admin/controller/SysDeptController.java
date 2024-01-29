@@ -1,6 +1,7 @@
 package top.loui.admin.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,6 +47,7 @@ public class SysDeptController extends BaseController {
     /**
      * 新增部门
      */
+    @SaCheckPermission("sys:dept:add")
     @PostMapping
     public String add(@RequestBody @Validated SysDeptBo bo) {
         boolean results = deptService.add(bo);
@@ -66,6 +68,7 @@ public class SysDeptController extends BaseController {
      *
      * @param deptId 部门ID
      */
+    @SaCheckPermission("sys:dept:edit")
     @PutMapping("/{deptId}")
     public String edit(@RequestBody @Validated SysDeptBo bo, @PathVariable Long deptId) {
         bo.setId(deptId);
@@ -89,6 +92,7 @@ public class SysDeptController extends BaseController {
      *
      * @param ids 部门ID，多个以英文逗号(,)分割
      */
+    @SaCheckPermission("sys:dept:delete")
     @DeleteMapping("/{ids}")
     public String delete(@PathVariable Long[] ids) {
         boolean results = deptService.removeByIds(Arrays.asList(ids));
