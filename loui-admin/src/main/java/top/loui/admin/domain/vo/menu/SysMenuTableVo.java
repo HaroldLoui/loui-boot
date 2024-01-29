@@ -3,7 +3,7 @@ package top.loui.admin.domain.vo.menu;
 import io.github.linpeilie.annotations.AutoEnumMapper;
 import lombok.Data;
 import lombok.Getter;
-import top.loui.admin.common.TreeNode;
+import top.loui.admin.common.tree.TreeNode;
 
 import java.io.Serial;
 import java.io.Serializable;

@@ -11,7 +11,6 @@ import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.springframework.stereotype.Service;
 import top.loui.admin.domain.SysMenu;
-import top.loui.admin.common.TreeNode;
 import top.loui.admin.domain.bo.SysMenuBo;
 import top.loui.admin.domain.query.SysMenuQuery;
 import top.loui.admin.domain.vo.DropdownListVo;
@@ -21,11 +20,11 @@ import top.loui.admin.mapper.SysMenuMapper;
 import top.loui.admin.service.SysMenuService;
 import top.loui.admin.utils.AssertUtils;
 import top.loui.admin.utils.RedisUtils;
+import top.loui.admin.utils.TreeUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 
 import static top.loui.admin.domain.table.SysMenuTableDef.SYS_MENU;
 import static top.loui.admin.domain.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
@@ -75,7 +74,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public List<SysMenuTableVo> selectMenuList(SysMenuQuery query) {
-        return buildTreeNode(
+        return TreeUtils.buildTreeNode(
             0L,
             mapper.selectAll(),
             (menu) -> converter.convert(menu, SysMenuTableVo.class),
@@ -122,7 +121,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         if (CollUtil.isEmpty(menuList)) {
             return Collections.emptyList();
         }
-        return buildTreeNode(
+        return TreeUtils.buildTreeNode(
             0L,
             menuList,
             (menu) -> {
@@ -148,7 +147,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         if (CollUtil.isEmpty(menuList)) {
             return Collections.emptyList();
         }
-        return buildTreeNode(
+        return TreeUtils.buildTreeNode(
             0L,
             menuList,
             (menu) -> converter.convert(menu, RouteVo.class),
@@ -215,21 +214,21 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     /**
      * 构造树形菜单列表
      */
-    private <R extends TreeNode<R>> List<R> buildTreeNode(Long id, List<SysMenu> list, Function<SysMenu, R> func, Comparator<R> comparator) {
-        if (ObjUtil.isNull(id) || CollUtil.isEmpty(list)) {
-            return Collections.emptyList();
-        }
-        List<SysMenu> children = list.stream()
-            .filter((menu) -> ObjUtil.notEquals(id, menu.getParentId()))
-            .toList();
-        return list.stream()
-            .filter((menu) -> ObjUtil.equals(id, menu.getParentId()))
-            .map((menu) -> {
-                R r = func.apply(menu);
-                r.setChildren(buildTreeNode(menu.getId(), children, func, comparator));
-                return r;
-            })
-            .sorted(comparator)
-            .toList();
-    }
+    // private <R extends TreeNode<R>> List<R> buildTreeNode(Long id, List<SysMenu> list, Function<SysMenu, R> func, Comparator<R> comparator) {
+    //     if (ObjUtil.isNull(id) || CollUtil.isEmpty(list)) {
+    //         return Collections.emptyList();
+    //     }
+    //     List<SysMenu> children = list.stream()
+    //         .filter((menu) -> ObjUtil.notEquals(id, menu.getParentId()))
+    //         .toList();
+    //     return list.stream()
+    //         .filter((menu) -> ObjUtil.equals(id, menu.getParentId()))
+    //         .map((menu) -> {
+    //             R r = func.apply(menu);
+    //             r.setChildren(buildTreeNode(menu.getId(), children, func, comparator));
+    //             return r;
+    //         })
+    //         .sorted(comparator)
+    //         .toList();
+    // }
 }

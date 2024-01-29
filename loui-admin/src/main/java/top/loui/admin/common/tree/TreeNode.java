@@ -1,4 +1,4 @@
-package top.loui.admin.common;
+package top.loui.admin.common.tree;
 
 import java.util.List;
 

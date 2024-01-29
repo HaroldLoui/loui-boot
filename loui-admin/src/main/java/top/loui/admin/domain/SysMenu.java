@@ -10,6 +10,7 @@ import io.github.linpeilie.annotations.AutoMapping;
 import io.github.linpeilie.annotations.AutoMappings;
 import lombok.Data;
 import org.dromara.hutool.extra.spring.SpringUtil;
+import top.loui.admin.common.tree.FatherSonRelationship;
 import top.loui.admin.config.id.MySnowFlakeIdGenerator;
 import top.loui.admin.domain.vo.menu.RouteVo;
 import top.loui.admin.domain.vo.menu.SysMenuTableVo;
@@ -32,7 +33,7 @@ import java.util.List;
 })
 @Data
 @Table(value = "sys_menu")
-public class SysMenu implements Serializable {
+public class SysMenu implements Serializable, FatherSonRelationship {
 
     @Serial
     private static final long serialVersionUID = -8772265654283963375L;
