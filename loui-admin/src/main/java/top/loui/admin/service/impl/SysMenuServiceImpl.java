@@ -75,7 +75,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<SysMenuTableVo> selectMenuList(SysMenuQuery query) {
         return TreeUtils.buildTreeNode(
-            0L,
             mapper.selectAll(),
             (menu) -> converter.convert(menu, SysMenuTableVo.class),
             Comparator.comparing(SysMenuTableVo::getSort)
@@ -122,7 +121,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             return Collections.emptyList();
         }
         return TreeUtils.buildTreeNode(
-            0L,
             menuList,
             (menu) -> {
                 DropdownListVo vo = new DropdownListVo();
@@ -148,7 +146,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             return Collections.emptyList();
         }
         return TreeUtils.buildTreeNode(
-            0L,
             menuList,
             (menu) -> converter.convert(menu, RouteVo.class),
             Comparator.comparing(RouteVo::getSort)
@@ -210,25 +207,4 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
         return buildTreePath(id, id + "," + path);
     }
-
-    /**
-     * 构造树形菜单列表
-     */
-    // private <R extends TreeNode<R>> List<R> buildTreeNode(Long id, List<SysMenu> list, Function<SysMenu, R> func, Comparator<R> comparator) {
-    //     if (ObjUtil.isNull(id) || CollUtil.isEmpty(list)) {
-    //         return Collections.emptyList();
-    //     }
-    //     List<SysMenu> children = list.stream()
-    //         .filter((menu) -> ObjUtil.notEquals(id, menu.getParentId()))
-    //         .toList();
-    //     return list.stream()
-    //         .filter((menu) -> ObjUtil.equals(id, menu.getParentId()))
-    //         .map((menu) -> {
-    //             R r = func.apply(menu);
-    //             r.setChildren(buildTreeNode(menu.getId(), children, func, comparator));
-    //             return r;
-    //         })
-    //         .sorted(comparator)
-    //         .toList();
-    // }
 }

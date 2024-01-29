@@ -8,10 +8,10 @@ public interface FatherSonRelationship {
     /**
      * 获取当前节点的ID
      */
-    Object getId();
+    Long getId();
 
     /**
      * 获取当前节点的父ID
      */
-    Object getParentId();
+    Long getParentId();
 }
