@@ -1,6 +1,7 @@
 package top.loui.admin.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class SysDictController extends BaseController {
     /**
      * 新增字典类型
      */
+    @SaCheckPermission("sys:dict_type:add")
     @PostMapping("/types")
     public String typesAdd(@RequestBody SysDictTypeBo bo) {
         boolean result = dictTypeService.add(bo);
@@ -72,6 +74,7 @@ public class SysDictController extends BaseController {
     /**
      * 修改字典类型
      */
+    @SaCheckPermission("sys:dict_type:edit")
     @PutMapping("/types/{id}")
     public String typesEdit(@RequestBody SysDictTypeBo bo, @PathVariable Long id) {
         bo.setId(id);
@@ -84,6 +87,7 @@ public class SysDictController extends BaseController {
      *
      * @param ids 字典类型ID，多个以英文逗号(,)分割
      */
+    @SaCheckPermission("sys:dict_type:delete")
     @DeleteMapping("/types/{ids}")
     public String typesDelete(@PathVariable Long[] ids) {
         boolean result = dictTypeService.removeByIds(Arrays.asList(ids));
@@ -126,6 +130,7 @@ public class SysDictController extends BaseController {
     /**
      * 新增字典
      */
+    @SaCheckPermission("sys:dict:add")
     @PostMapping
     public String add(@RequestBody SysDictBo bo) {
         boolean result = dictService.add(bo);
@@ -135,6 +140,7 @@ public class SysDictController extends BaseController {
     /**
      * 修改字典
      */
+    @SaCheckPermission("sys:dict:edit")
     @PutMapping("/{id}")
     public String edit(@RequestBody SysDictBo bo, @PathVariable Long id) {
         bo.setId(id);
@@ -145,6 +151,7 @@ public class SysDictController extends BaseController {
     /**
      * 删除字典
      */
+    @SaCheckPermission("sys:dict:delete")
     @DeleteMapping("/{ids}")
     public String delete(@PathVariable Long[] ids) {
         boolean result = dictService.removeByIds(Arrays.asList(ids));
