@@ -40,7 +40,8 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
     public PageData<SysDictTypeVo> selectDictTypesPage(SysDictTypeQuery query) {
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_DICT_TYPE.DEFAULT_COLUMNS)
-            .where(SYS_DICT_TYPE.NAME.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords())));
+            .from(SYS_DICT_TYPE)
+            .where(SYS_DICT_TYPE.NAME.like(query.getKeywords(), StrUtil::isNotEmpty));
         Page<SysDictType> page = mapper.paginate(query.buildPage(), qw);
         return PageData.pageAs(page, (dict) -> converter.convert(dict, SysDictTypeVo.class));
     }

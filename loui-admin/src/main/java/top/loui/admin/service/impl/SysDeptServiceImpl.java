@@ -45,6 +45,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public List<SysDeptVo> selectSysDeptList(SysDeptQuery query) {
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_DEPT.DEFAULT_COLUMNS)
+            .from(SYS_DEPT)
             .where(SYS_DEPT.NAME.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords())))
             .and(SYS_DEPT.STATUS.eq(query.getStatus(), ObjUtil.isNotNull(query.getStatus())));
         List<SysDept> list = mapper.selectListByQuery(qw);
@@ -124,6 +125,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         // 找parentId的上一级parentId
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_DEPT.PARENT_ID)
+            .from(SYS_DEPT)
             .where(SYS_DEPT.ID.eq(parentId));
         Long id = mapper.selectObjectByQueryAs(qw, Long.class);
         if (ObjUtil.isNull(id)) {

@@ -163,6 +163,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 查询用户绑定的角色列表
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_USER_ROLE.ROLE_ID)
+            .from(SYS_USER_ROLE)
             .where(SYS_USER_ROLE.USER_ID.eq(userId));
         List<Long> roleIds = userRoleService.listAs(qw, Long.class);
         formData.setRoleIds(roleIds);

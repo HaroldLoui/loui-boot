@@ -98,6 +98,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public boolean deleteMenuById(Long id) {
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_MENU.DEFAULT_COLUMNS)
+            .from(SYS_MENU)
             .where(SYS_MENU.PARENT_ID.eq(id));
         List<SysMenu> menuList = mapper.selectListByQuery(qw);
         AssertUtils.isNotEmpty(menuList, "该菜单有子菜单，无法删除");
@@ -122,7 +123,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public List<DropdownListVo> options() {
-        QueryWrapper qw = QueryWrapper.create().select(SYS_MENU.DEFAULT_COLUMNS);
+        QueryWrapper qw = QueryWrapper.create().select(SYS_MENU.DEFAULT_COLUMNS).from(SYS_MENU);
         List<SysMenu> menuList = mapper.selectListByQuery(qw);
         if (CollUtil.isEmpty(menuList)) {
             return Collections.emptyList();
@@ -210,6 +211,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         // 找parentId的上一级parentId
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_MENU.PARENT_ID)
+            .from(SYS_MENU)
             .where(SYS_MENU.ID.eq(parentId));
         Long id = mapper.selectObjectByQueryAs(qw, Long.class);
         if (ObjUtil.isNull(id)) {

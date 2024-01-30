@@ -79,8 +79,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 构造查询条件
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_ROLE.DEFAULT_COLUMNS)
-            .where(SYS_ROLE.NAME.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords()))
-                .or(SYS_ROLE.CODE.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords())))
+            .from(SYS_ROLE)
+            .where(SYS_ROLE.NAME.like(query.getKeywords(), StrUtil::isNotEmpty)
+                .or(SYS_ROLE.CODE.like(query.getKeywords(), StrUtil::isNotEmpty))
             );
         // 查询分页数据
         Page<SysRole> page = mapper.paginate(query.buildPage(), qw);
@@ -98,6 +99,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 构造查询条件
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_ROLE.ID.as("value"), SYS_ROLE.NAME.as("label"))
+            .from(SYS_ROLE)
             .where(SYS_ROLE.DATA_SCOPE.ne(0));
         // 查询并返回数据
         return mapper.selectListByQueryAs(qw, DropdownListVo.class);

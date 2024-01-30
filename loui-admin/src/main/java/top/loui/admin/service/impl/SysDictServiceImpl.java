@@ -41,8 +41,9 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     public PageData<SysDictVo> selectDictPage(SysDictQuery query) {
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_DICT.DEFAULT_COLUMNS)
-            .where(SYS_DICT.NAME.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords())))
-            .and(SYS_DICT.TYPE_CODE.eq(query.getTypeCode(), StrUtil.isNotEmpty(query.getTypeCode())));
+            .from(SYS_DICT)
+            .where(SYS_DICT.NAME.like(query.getKeywords(), StrUtil::isNotEmpty))
+            .and(SYS_DICT.TYPE_CODE.eq(query.getTypeCode(), StrUtil::isNotEmpty));
         Page<SysDict> page = mapper.paginate(query.buildPage(), qw);
         return PageData.pageAs(page, (dict) -> converter.convert(dict, SysDictVo.class));
     }
@@ -55,6 +56,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Override
     public List<DropdownListVo> options(String typeCode) {
         QueryWrapper qw = QueryWrapper.create()
+            .from(SYS_DICT)
             .select(SYS_DICT.ID.as("value"), SYS_DICT.NAME.as("label"))
             .where(SYS_DICT.TYPE_CODE.eq(typeCode));
         return mapper.selectListByQueryAs(qw, DropdownListVo.class);

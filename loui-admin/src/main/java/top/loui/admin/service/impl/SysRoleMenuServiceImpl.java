@@ -33,6 +33,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
     public List<Long> selectMenuIdsByRoleId(Long roleId) {
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_ROLE_MENU.MENU_ID)
+            .from(SYS_ROLE_MENU)
             .where(SYS_ROLE_MENU.ROLE_ID.eq(roleId));
         return mapper.selectListByQueryAs(qw, Long.class);
     }
