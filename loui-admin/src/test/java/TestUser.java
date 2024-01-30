@@ -66,7 +66,8 @@ public class TestUser {
     @Test
     public void testQuery() {
         QueryWrapper qw = QueryWrapper.create()
-            .select(SYS_ROLE.DEFAULT_COLUMNS);
+            .select(SYS_ROLE.DEFAULT_COLUMNS)
+            .from(SYS_ROLE);
         Page<SysRole> pageQuery = Page.of(1, 10);
         pageQuery.setOptimizeCountQuery(true);
         Page<SysRole> page = roleMapper.paginate(pageQuery, qw);

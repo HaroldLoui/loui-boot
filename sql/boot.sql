@@ -59,9 +59,9 @@ DROP TABLE IF EXISTS `sys_dict`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sys_dict` (
   `id` bigint NOT NULL COMMENT '主键',
-  `type_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '字典类型编码',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '字典项名称',
-  `value` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '字典项值',
+  `type_code` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT '字典类型编码',
+  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '字典项名称',
+  `value` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '字典项值',
   `sort` int DEFAULT '0' COMMENT '排序',
   `status` tinyint DEFAULT '0' COMMENT '状态(1:正常;0:禁用)',
   `defaulted` tinyint DEFAULT '0' COMMENT '是否默认(1:是;0:否)',
@@ -94,7 +94,7 @@ DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type` (
   `id` bigint NOT NULL COMMENT '主键 ',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '类型名称',
-  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '类型编码',
+  `code` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类型编码',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态(0:正常;1:禁用)',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -194,10 +194,10 @@ INSERT INTO `sys_menu` VALUES (94,36,'0,36','表格',1,'table','demo/table',NULL
 INSERT INTO `sys_menu` VALUES (95,36,'0,36','字典组件',1,'dict-demo','demo/dict',NULL,1,4,'','','2022-11-20 23:16:30','2022-11-20 23:16:32',0,1);
 INSERT INTO `sys_menu` VALUES (96,89,'0,89','Permission',1,'permission','demo/permission/page',NULL,1,1,'','','2022-11-20 23:16:30','2022-11-20 23:16:32',0,1);
 INSERT INTO `sys_menu` VALUES (97,89,'0,89','Icons',1,'icon-demo','demo/icons',NULL,1,2,'','','2022-11-20 23:16:30','2022-11-20 23:16:32',0,1);
-INSERT INTO `sys_menu` VALUES (98,0,'0','Table',2,'/table','Layout',NULL,0,10,'table','','2023-08-08 20:49:50','2023-08-08 20:49:50',0,0);
-INSERT INTO `sys_menu` VALUES (99,98,'0,98','动态Table',1,'dynamic-table','table/dynamic-table/index',NULL,0,1,'','','2023-08-08 20:54:42','2023-08-08 20:54:42',0,1);
-INSERT INTO `sys_menu` VALUES (100,98,'0,98','拖拽Table',1,'drag-table','table/drag-table',NULL,0,2,'','','2023-08-08 20:54:42','2023-08-08 20:54:42',0,1);
-INSERT INTO `sys_menu` VALUES (101,98,'0,98','综合Table',1,'complex-table','table/complex-table',NULL,0,3,'','','2023-08-08 20:54:42','2023-08-08 20:54:42',0,1);
+INSERT INTO `sys_menu` VALUES (98,0,'0','Table',2,'/table','Layout',NULL,1,10,'table','','2023-08-08 20:49:50','2024-01-30 10:45:26',0,0);
+INSERT INTO `sys_menu` VALUES (99,98,'0,98','动态Table',1,'dynamic-table','table/dynamic-table/index',NULL,1,1,'','','2023-08-08 20:54:42','2024-01-30 10:45:32',0,1);
+INSERT INTO `sys_menu` VALUES (100,98,'0,98','拖拽Table',1,'drag-table','table/drag-table',NULL,1,2,'','','2023-08-08 20:54:42','2024-01-30 10:45:42',0,1);
+INSERT INTO `sys_menu` VALUES (101,98,'0,98','综合Table',1,'complex-table','table/complex-table',NULL,1,3,'','','2023-08-08 20:54:42','2024-01-30 10:45:50',0,1);
 INSERT INTO `sys_menu` VALUES (102,26,'0,26','平台文档(内嵌)',3,'internal-doc','demo/internal-doc',NULL,1,1,'document','','2022-02-18 00:01:40','2022-02-18 00:01:40',0,0);
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -233,15 +233,15 @@ LOCK TABLES `sys_role` WRITE;
 INSERT INTO `sys_role` VALUES (1,'超级管理员','ROOT',1,1,0,0,'2021-05-21 14:56:51','2018-12-23 16:00:00');
 INSERT INTO `sys_role` VALUES (2,'系统管理员','ADMIN',2,1,1,0,'2021-03-25 12:39:54',NULL);
 INSERT INTO `sys_role` VALUES (3,'访问游客','GUEST',3,1,2,0,'2021-05-26 15:49:05','2019-05-05 16:00:00');
-INSERT INTO `sys_role` VALUES (4,'系统管理员1','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (5,'系统管理员2','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (6,'系统管理员3','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (7,'系统管理员4','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (8,'系统管理员5','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (9,'系统管理员6','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (10,'系统管理员7','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (11,'系统管理员8','ADMIN1',2,1,1,0,'2021-03-25 12:39:54',NULL);
-INSERT INTO `sys_role` VALUES (12,'系统管理员9','ADMIN1',2,1,1,0,'2021-03-25 12:39:54','2024-01-26 14:07:19');
+INSERT INTO `sys_role` VALUES (4,'系统管理员1','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (5,'系统管理员2','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (6,'系统管理员3','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (7,'系统管理员4','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (8,'系统管理员5','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (9,'系统管理员6','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (10,'系统管理员7','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (11,'系统管理员8','ADMIN1',2,1,1,1,'2021-03-25 12:39:54',NULL);
+INSERT INTO `sys_role` VALUES (12,'系统管理员9','ADMIN1',2,1,1,1,'2021-03-25 12:39:54','2024-01-26 14:07:19');
 /*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,17 +272,6 @@ INSERT INTO `sys_role_menu` VALUES (2,3);
 INSERT INTO `sys_role_menu` VALUES (2,4);
 INSERT INTO `sys_role_menu` VALUES (2,5);
 INSERT INTO `sys_role_menu` VALUES (2,6);
-INSERT INTO `sys_role_menu` VALUES (2,9);
-INSERT INTO `sys_role_menu` VALUES (2,10);
-INSERT INTO `sys_role_menu` VALUES (2,11);
-INSERT INTO `sys_role_menu` VALUES (2,12);
-INSERT INTO `sys_role_menu` VALUES (2,13);
-INSERT INTO `sys_role_menu` VALUES (2,14);
-INSERT INTO `sys_role_menu` VALUES (2,15);
-INSERT INTO `sys_role_menu` VALUES (2,16);
-INSERT INTO `sys_role_menu` VALUES (2,17);
-INSERT INTO `sys_role_menu` VALUES (2,18);
-INSERT INTO `sys_role_menu` VALUES (2,19);
 INSERT INTO `sys_role_menu` VALUES (2,20);
 INSERT INTO `sys_role_menu` VALUES (2,21);
 INSERT INTO `sys_role_menu` VALUES (2,22);
@@ -293,7 +282,6 @@ INSERT INTO `sys_role_menu` VALUES (2,30);
 INSERT INTO `sys_role_menu` VALUES (2,31);
 INSERT INTO `sys_role_menu` VALUES (2,32);
 INSERT INTO `sys_role_menu` VALUES (2,33);
-INSERT INTO `sys_role_menu` VALUES (2,34);
 INSERT INTO `sys_role_menu` VALUES (2,36);
 INSERT INTO `sys_role_menu` VALUES (2,37);
 INSERT INTO `sys_role_menu` VALUES (2,38);
@@ -319,7 +307,6 @@ INSERT INTO `sys_role_menu` VALUES (2,88);
 INSERT INTO `sys_role_menu` VALUES (2,89);
 INSERT INTO `sys_role_menu` VALUES (2,90);
 INSERT INTO `sys_role_menu` VALUES (2,91);
-INSERT INTO `sys_role_menu` VALUES (2,92);
 INSERT INTO `sys_role_menu` VALUES (2,93);
 INSERT INTO `sys_role_menu` VALUES (2,94);
 INSERT INTO `sys_role_menu` VALUES (2,95);
@@ -409,4 +396,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-27 15:28:15
+-- Dump completed on 2024-01-30 16:11:37
