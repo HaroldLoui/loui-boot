@@ -1,5 +1,6 @@
 package top.loui.admin.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
@@ -15,6 +16,7 @@ import top.loui.admin.domain.bo.SysMenuBo;
 import top.loui.admin.domain.query.SysMenuQuery;
 import top.loui.admin.domain.vo.DropdownListVo;
 import top.loui.admin.domain.vo.menu.RouteVo;
+import top.loui.admin.domain.vo.menu.SysMenuRolesVo;
 import top.loui.admin.domain.vo.menu.SysMenuTableVo;
 import top.loui.admin.mapper.SysMenuMapper;
 import top.loui.admin.service.SysMenuService;
@@ -28,6 +30,7 @@ import java.util.List;
 
 import static top.loui.admin.domain.table.SysMenuTableDef.SYS_MENU;
 import static top.loui.admin.domain.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
+import static top.loui.admin.domain.table.SysRoleTableDef.SYS_ROLE;
 import static top.loui.admin.domain.table.SysUserRoleTableDef.SYS_USER_ROLE;
 
 /**
@@ -50,6 +53,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public List<String> getPerms(Object userId) {
+        List<String> roleList = StpUtil.getRoleList(userId);
+        if (CollUtil.contains(roleList, "ROOT")) {
+            return Collections.singletonList("*:*:*");
+        }
         final String key = StrUtil.format("sa-token:perms:{}", userId);
         if (RedisUtils.hasKey(key)) {
             return RedisUtils.getCacheObject(key);
@@ -139,9 +146,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<RouteVo> routes() {
         QueryWrapper qw = QueryWrapper.create()
-            .select(SYS_MENU.DEFAULT_COLUMNS)
+            .select(SYS_MENU.DEFAULT_COLUMNS, SYS_ROLE.CODE.as("roles"))
+            .from(SYS_MENU.as("m"))
+            .leftJoin(SYS_ROLE_MENU).as("rm").on(SYS_MENU.ID.eq(SYS_ROLE_MENU.MENU_ID))
+            .leftJoin(SYS_ROLE).as("r").on(SYS_ROLE_MENU.ROLE_ID.eq(SYS_ROLE.ID))
             .where(SYS_MENU.TYPE.in(1, 2, 3));
-        List<SysMenu> menuList = mapper.selectListByQuery(qw);
+        List<SysMenuRolesVo> menuList = mapper.selectListByQueryAs(qw, SysMenuRolesVo.class);
         if (CollUtil.isEmpty(menuList)) {
             return Collections.emptyList();
         }
