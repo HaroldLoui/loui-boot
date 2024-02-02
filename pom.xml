@@ -27,6 +27,7 @@
         <sa-token.version>1.37.0</sa-token.version>
         <easy-captcha.version>2.0.1</easy-captcha.version>
         <hutool.version>6.0.0-M10</hutool.version>
+        <easyexcel.version>3.2.1</easyexcel.version>
 
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -92,6 +93,12 @@
                 <groupId>org.dromara.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <!-- easy-excel -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

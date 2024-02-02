@@ -2,7 +2,9 @@ package top.loui.admin.domain;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,6 +15,8 @@ import java.io.Serializable;
  * @author hanjinfeng
  * @since 2024-01-24
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Table(value = "sys_user_role")
 public class SysUserRole implements Serializable {

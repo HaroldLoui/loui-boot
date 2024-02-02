@@ -12,7 +12,7 @@ import top.loui.admin.domain.SysUser;
 import top.loui.admin.domain.bo.SysMenuBo;
 import top.loui.admin.domain.vo.menu.RouteVo;
 import top.loui.admin.domain.vo.menu.SysMenuRolesVo;
-import top.loui.admin.domain.vo.menu.SysMenuTableVo.Type;
+import top.loui.admin.enums.MenuType;
 import top.loui.admin.mapper.SysMenuMapper;
 import top.loui.admin.mapper.SysRoleMapper;
 import top.loui.admin.service.SysRoleService;
@@ -94,7 +94,7 @@ public class TestUser {
         menuBo.setRedirect("132");
         menuBo.setPerm("123");
         menuBo.setSort(0);
-        menuBo.setType(Type.BUTTON);
+        menuBo.setMenuType(MenuType.BUTTON);
         menuBo.setVisible(0);
         SysMenu menu = converter.convert(menuBo, SysMenu.class);
         System.out.println(JsonUtils.toJsonString(menu));

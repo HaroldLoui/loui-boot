@@ -1,6 +1,7 @@
 package top.loui.admin.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.alibaba.excel.EasyExcel;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Db;
@@ -9,6 +10,7 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import io.github.linpeilie.Converter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.lang.Validator;
 import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.util.ObjUtil;
@@ -20,6 +22,7 @@ import top.loui.admin.domain.bo.SysUserBo;
 import top.loui.admin.domain.query.SysUserQuery;
 import top.loui.admin.domain.vo.LoginUserVo;
 import top.loui.admin.domain.vo.SysUserVo;
+import top.loui.admin.domain.vo.UserExportVO;
 import top.loui.admin.mapper.SysUserMapper;
 import top.loui.admin.service.SysMenuService;
 import top.loui.admin.service.SysRoleService;
@@ -28,6 +31,9 @@ import top.loui.admin.service.SysUserService;
 import top.loui.admin.utils.AssertUtils;
 import top.loui.admin.utils.SecureUtils;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 
 import static top.loui.admin.domain.table.SysUserRoleTableDef.SYS_USER_ROLE;
@@ -84,7 +90,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 返回指定格式的分页数据
         return PageData.pageAs(page, (user) -> {
             SysUserVo vo = converter.convert(user, SysUserVo.class);
-            vo.setGenderLabel("男");
             vo.setDeptName("");
             vo.setRoleNames("");
             return vo;
@@ -178,10 +183,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public void export(SysUserQuery query, HttpServletResponse response) {
+        String fileName = "用户列表.xlsx";
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+
         // 构造查询条件
         QueryWrapper qw = buildQueryWrapperByQuery(query);
         // 查询列表
         List<SysUser> userList = mapper.selectListByQuery(qw);
+        try {
+            if (CollUtil.isEmpty(userList)) {
+                EasyExcel.write(response.getOutputStream(), UserExportVO.class)
+                    .sheet("用户列表")
+                    .doWrite(Collections.emptyList());
+            } else {
+                List<UserExportVO> exportUserList = userList.stream()
+                    .map((user) -> converter.convert(user, UserExportVO.class))
+                    .toList();
+                EasyExcel.write(response.getOutputStream(), UserExportVO.class)
+                    .sheet("用户列表")
+                    .doWrite(exportUserList);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

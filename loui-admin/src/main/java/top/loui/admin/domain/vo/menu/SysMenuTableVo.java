@@ -1,9 +1,8 @@
 package top.loui.admin.domain.vo.menu;
 
-import io.github.linpeilie.annotations.AutoEnumMapper;
 import lombok.Data;
-import lombok.Getter;
 import top.loui.admin.common.tree.TreeNode;
+import top.loui.admin.enums.MenuType;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -66,7 +65,7 @@ public class SysMenuTableVo implements Serializable, TreeNode<SysMenuTableVo> {
     /**
      * 菜单类型
      */
-    private Type type;
+    private MenuType type;
     
     /**
      * 菜单是否可见(1:显示;0:隐藏)
@@ -77,30 +76,4 @@ public class SysMenuTableVo implements Serializable, TreeNode<SysMenuTableVo> {
      * 子菜单
      */
     private List<SysMenuTableVo> children;
-
-    @Getter
-    @AutoEnumMapper("value")
-    public enum Type {
-        BUTTON(4),
-        CATALOG(2),
-        EXTLINK(3),
-        MENU(1),
-        NULL(0);
-
-        private final Integer value;
-
-        Type(Integer value) {
-            this.value = value;
-        }
-    }
-
-    public static Type getType(Integer type) {
-        return switch (type) {
-            case 1 -> Type.MENU;
-            case 2 -> Type.CATALOG;
-            case 3 -> Type.EXTLINK;
-            case 4 -> Type.BUTTON;
-            default -> Type.NULL;
-        };
-    }
 }

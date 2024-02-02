@@ -53,7 +53,7 @@ public class SysMenu implements Serializable, FatherSonRelationship {
     /**
      * 菜单类型(1:菜单 2:目录 3:外链 4:按钮)
      */
-    @AutoMapping(target = "type", expression = "java(SysMenuTableVo.getType(source.getType()))")
+    @AutoMapping(target = "type", expression = "java(top.loui.admin.enums.MenuType.getType(source.getType()))")
     private Integer type;
 
     /**

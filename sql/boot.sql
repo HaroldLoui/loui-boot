@@ -244,7 +244,7 @@ DROP TABLE IF EXISTS `sys_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sys_user` (
-  `id` int NOT NULL,
+  `id` bigint NOT NULL,
   `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
   `nickname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '昵称',
   `gender` tinyint DEFAULT '0' COMMENT '性别((0:未知;1:男;2:女))',
@@ -268,7 +268,7 @@ CREATE TABLE `sys_user` (
 
 LOCK TABLES `sys_user` WRITE;
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
-INSERT INTO `sys_user` VALUES (1,'root','有来技术',0,'DOFcmhrVFvL42Qt9Xr67JXbupQLTBFtvS8Yu846zXTDnXMefN4Z1IxESKEKseIILCbhxaaJ+CsfOiZeoJfKE0q7hY7exWLbRC+iO87eEdw1yyIwmCY6EA2G3BcFZCYsn8rafSmjnE8gTTHfs9sgSYXpAxiv5UHhGFFoNwK+YhYY=',NULL,'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif','17621590365',1,'youlaitech@163.com',0,'2019-10-10 13:41:22','2024-01-24 15:34:44'),(2,'admin','系统管理员',1,'DOFcmhrVFvL42Qt9Xr67JXbupQLTBFtvS8Yu846zXTDnXMefN4Z1IxESKEKseIILCbhxaaJ+CsfOiZeoJfKE0q7hY7exWLbRC+iO87eEdw1yyIwmCY6EA2G3BcFZCYsn8rafSmjnE8gTTHfs9sgSYXpAxiv5UHhGFFoNwK+YhYY=',1,'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif','17621210366',1,'',0,'2019-10-10 13:41:22','2024-01-24 15:34:44'),(3,'test','测试小用户',1,'DOFcmhrVFvL42Qt9Xr67JXbupQLTBFtvS8Yu846zXTDnXMefN4Z1IxESKEKseIILCbhxaaJ+CsfOiZeoJfKE0q7hY7exWLbRC+iO87eEdw1yyIwmCY6EA2G3BcFZCYsn8rafSmjnE8gTTHfs9sgSYXpAxiv5UHhGFFoNwK+YhYY=',3,'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif','17621210366',1,'youlaitech@163.com',0,'2021-06-05 01:31:29','2024-01-24 15:34:44');
+INSERT INTO `sys_user` VALUES (1,'root','有来技术',0,'DOFcmhrVFvL42Qt9Xr67JXbupQLTBFtvS8Yu846zXTDnXMefN4Z1IxESKEKseIILCbhxaaJ+CsfOiZeoJfKE0q7hY7exWLbRC+iO87eEdw1yyIwmCY6EA2G3BcFZCYsn8rafSmjnE8gTTHfs9sgSYXpAxiv5UHhGFFoNwK+YhYY=',NULL,'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif','17621590365',1,'youlaitech@163.com',0,'2019-10-10 13:41:22','2024-01-24 15:34:44'),(2,'admin','系统管理员',1,'DOFcmhrVFvL42Qt9Xr67JXbupQLTBFtvS8Yu846zXTDnXMefN4Z1IxESKEKseIILCbhxaaJ+CsfOiZeoJfKE0q7hY7exWLbRC+iO87eEdw1yyIwmCY6EA2G3BcFZCYsn8rafSmjnE8gTTHfs9sgSYXpAxiv5UHhGFFoNwK+YhYY=',1,'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif','17621210366',1,'',0,'2019-10-10 13:41:22','2024-01-24 15:34:44'),(3,'test','测试小用户',1,'DOFcmhrVFvL42Qt9Xr67JXbupQLTBFtvS8Yu846zXTDnXMefN4Z1IxESKEKseIILCbhxaaJ+CsfOiZeoJfKE0q7hY7exWLbRC+iO87eEdw1yyIwmCY6EA2G3BcFZCYsn8rafSmjnE8gTTHfs9sgSYXpAxiv5UHhGFFoNwK+YhYY=',3,'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif','17621210366',1,'youlaitech@163.com',0,'2021-06-05 01:31:29','2024-01-24 15:34:44'),(1753315135478968320,'导入用户','importUser',1,'Dhk/iwzNgXi1y1Xr84nLf+01WXrpz7GOOoe3FOKAQxf7AND22navaDjWp6/04E9L/GSnrofRwyYHV+V7F2duiefoQq8FEiL6H1eH97mn9gukpf0dv6R0VKjD/YtOf3X0E4uqPsTpd5LOPKpQ3OSup3j2Ktro/h1K4yYa5GizWoA=',3,'','15185202744',1,'',0,'2024-02-02 15:11:17','2024-02-02 15:11:34');
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,7 +292,7 @@ CREATE TABLE `sys_user_role` (
 
 LOCK TABLES `sys_user_role` WRITE;
 /*!40000 ALTER TABLE `sys_user_role` DISABLE KEYS */;
-INSERT INTO `sys_user_role` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(2,2),(3,3);
+INSERT INTO `sys_user_role` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(2,2),(3,3),(1753315135478968320,2);
 /*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -305,4 +305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-02 10:56:46
+-- Dump completed on 2024-02-02 15:29:29
