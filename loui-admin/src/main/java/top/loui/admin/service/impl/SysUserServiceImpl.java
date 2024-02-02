@@ -2,12 +2,14 @@ package top.loui.admin.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Db;
 import com.mybatisflex.core.update.UpdateChain;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import io.github.linpeilie.Converter;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.collection.CollUtil;
@@ -31,6 +33,9 @@ import top.loui.admin.service.SysUserService;
 import top.loui.admin.utils.AssertUtils;
 import top.loui.admin.utils.SecureUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -206,6 +211,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 用户导入模板下载
+     */
+    @Override
+    public void downloadTemplate(HttpServletResponse response) throws IOException {
+        String fileName = "用户导入模板.xlsx";
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+
+        String fileClassPath = "excel-templates" + File.separator + fileName;
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(fileClassPath);
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        try (ExcelWriter excelWriter = EasyExcel.write(outputStream).withTemplate(inputStream).build()) {
+            excelWriter.finish();
         }
     }
 

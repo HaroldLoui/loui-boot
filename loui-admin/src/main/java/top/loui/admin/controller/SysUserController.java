@@ -2,9 +2,6 @@ package top.loui.admin.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -31,11 +28,7 @@ import top.loui.admin.easyexcel.UserImportListener;
 import top.loui.admin.service.SysUserService;
 import top.loui.admin.utils.ExcelUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -133,17 +126,7 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("/template")
     public void template(HttpServletResponse response) throws IOException {
-        String fileName = "用户导入模板.xlsx";
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
-
-        String fileClassPath = "excel-templates" + File.separator + fileName;
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(fileClassPath);
-
-        ServletOutputStream outputStream = response.getOutputStream();
-        try (ExcelWriter excelWriter = EasyExcel.write(outputStream).withTemplate(inputStream).build()) {
-            excelWriter.finish();
-        }
+        userService.downloadTemplate(response);
     }
 
     /**
