@@ -41,6 +41,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
+import static top.loui.admin.domain.table.SysDeptTableDef.SYS_DEPT;
 import static top.loui.admin.domain.table.SysUserRoleTableDef.SYS_USER_ROLE;
 import static top.loui.admin.domain.table.SysUserTableDef.SYS_USER;
 
@@ -95,8 +96,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 返回指定格式的分页数据
         return PageData.pageAs(page, (user) -> {
             SysUserVo vo = converter.convert(user, SysUserVo.class);
-            vo.setDeptName("");
-            vo.setRoleNames("");
+            vo.setRoleNames(CollUtil.join(roleService.getRoles(user.getId()), StrUtil.COMMA));
             return vo;
         });
     }
@@ -269,13 +269,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     private QueryWrapper buildQueryWrapperByQuery(SysUserQuery query) {
         return QueryWrapper.create()
-            .select(SYS_USER.DEFAULT_COLUMNS)
-            .where(SYS_USER.USERNAME.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords()))
-                .or(SYS_USER.NICKNAME.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords())))
-                .or(SYS_USER.MOBILE.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords())))
+            .select(SYS_USER.DEFAULT_COLUMNS, SYS_DEPT.NAME.as("deptName"))
+            .from(SYS_USER.as("u"))
+            .leftJoin(SYS_DEPT).as("d").on(SYS_USER.DEPT_ID.eq(SYS_DEPT.ID))
+            .where(SYS_USER.USERNAME.like(query.getKeywords(), StrUtil::isNotEmpty)
+                .or(SYS_USER.NICKNAME.like(query.getKeywords(), StrUtil::isNotEmpty))
+                .or(SYS_USER.MOBILE.like(query.getKeywords(), StrUtil::isNotEmpty))
             )
-            .and(SYS_USER.STATUS.eq(query.getStatus(), ObjUtil.isNotNull(query.getStatus())))
-            .and(SYS_USER.DEPT_ID.eq(query.getDeptId(), ObjUtil.isNotNull(query.getDeptId())));
+            .and(SYS_USER.STATUS.eq(query.getStatus(), ObjUtil::isNotNull))
+            .and(SYS_USER.DEPT_ID.eq(query.getDeptId(), ObjUtil::isNotNull));
     }
 
     /**

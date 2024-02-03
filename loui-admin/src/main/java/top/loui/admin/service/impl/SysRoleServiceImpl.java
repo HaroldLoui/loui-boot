@@ -62,7 +62,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             .select(QueryMethods.distinct(SYS_ROLE.CODE))
             .from(SYS_USER_ROLE.as("ur"))
             .leftJoin(SYS_ROLE).as("r").on(SYS_USER_ROLE.ROLE_ID.eq(SYS_ROLE.ID))
-            .where(SYS_USER_ROLE.USER_ID.eq(userId));
+            .where(SYS_USER_ROLE.USER_ID.eq(userId))
+            .and(SYS_ROLE.CODE.isNotNull());
         List<String> roles = mapper.selectListByQueryAs(qw, String.class);
         RedisUtils.setCacheObject(key, roles);
         return roles;

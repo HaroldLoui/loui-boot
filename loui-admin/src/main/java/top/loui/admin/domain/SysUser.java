@@ -24,8 +24,8 @@ import java.time.LocalDateTime;
  * @since 2024-01-24
  */
 @AutoMappers({
-        @AutoMapper(target = SysUserVo.class, reverseConvertGenerate = false),
-        @AutoMapper(target = UserExportVO.class, reverseConvertGenerate = false),
+    @AutoMapper(target = SysUserVo.class, reverseConvertGenerate = false),
+    @AutoMapper(target = UserExportVO.class, reverseConvertGenerate = false),
 })
 @Data
 @Table(value = "sys_user")
@@ -54,8 +54,8 @@ public class SysUser implements Serializable {
      * 性别((0:未知;1:男;2:女))
      */
     @AutoMappings({
-            @AutoMapping(targetClass = SysUserVo.class, target = "genderLabel", expression = "java(top.loui.admin.enums.Gender.getLabelByValue(source.getGender()))"),
-            @AutoMapping(targetClass = UserExportVO.class, target = "gender", expression = "java(top.loui.admin.enums.Gender.getLabelByValue(source.getGender()))"),
+        @AutoMapping(targetClass = SysUserVo.class, target = "genderLabel", expression = "java(top.loui.admin.enums.Gender.getLabelByValue(source.getGender()))"),
+        @AutoMapping(targetClass = UserExportVO.class, target = "gender", expression = "java(top.loui.admin.enums.Gender.getLabelByValue(source.getGender()))"),
     })
     private Integer gender;
 
@@ -68,6 +68,12 @@ public class SysUser implements Serializable {
      * 部门ID
      */
     private Long deptId;
+
+    /**
+     * 部门名称
+     */
+    @Column(ignore = true)
+    private String deptName;
 
     /**
      * 用户头像
