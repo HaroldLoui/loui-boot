@@ -10,11 +10,13 @@ import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.springframework.stereotype.Service;
+import top.loui.admin.annotations.CacheSave;
 import top.loui.admin.common.page.PageData;
 import top.loui.admin.domain.SysConfig;
 import top.loui.admin.domain.bo.SysConfigBo;
 import top.loui.admin.domain.query.SysConfigQuery;
 import top.loui.admin.domain.vo.SysConfigVo;
+import top.loui.admin.enums.CacheType;
 import top.loui.admin.mapper.SysConfigMapper;
 import top.loui.admin.service.SysConfigService;
 import top.loui.admin.utils.AssertUtils;
@@ -42,21 +44,22 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
      * @param configKey 配置键
      * @return value
      */
+    @CacheSave(name = "sys_config:", key = "#configKey", cacheType = CacheType.BOTH)
     @Override
     public String selectValueByConfigKey(String configKey) {
-        final String key = "sys_config:" + configKey;
-        if (RedisUtils.hasKey(key)) {
-            return RedisUtils.getCacheObject(key);
-        }
+        // final String key = "sys_config:" + configKey;
+        // if (RedisUtils.hasKey(key)) {
+        //     return RedisUtils.getCacheObject(key);
+        // }
         QueryWrapper qw = QueryWrapper.create()
-                .select(SYS_CONFIG.CONFIG_VALUE)
-                .from(SYS_CONFIG)
-                .where(SYS_CONFIG.CONFIG_KEY.eq(configKey));
+            .select(SYS_CONFIG.CONFIG_VALUE)
+            .from(SYS_CONFIG)
+            .where(SYS_CONFIG.CONFIG_KEY.eq(configKey));
         String value = mapper.selectObjectByQueryAs(qw, String.class);
-        if (ObjUtil.isNull(value)) {
-            return null;
-        }
-        RedisUtils.setCacheObject(key, value);
+        // if (ObjUtil.isNull(value)) {
+        //     return null;
+        // }
+        // RedisUtils.setCacheObject(key, value);
         return value;
     }
 
@@ -68,9 +71,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     @Override
     public PageData<SysConfigVo> selectConfigPage(SysConfigQuery query) {
         QueryWrapper qw = QueryWrapper.create()
-                .select(SYS_CONFIG.DEFAULT_COLUMNS)
-                .from(SYS_CONFIG)
-                .where(SYS_CONFIG.CONFIG_NAME.like(query.getKeywords(), StrUtil::isNotEmpty));
+            .select(SYS_CONFIG.DEFAULT_COLUMNS)
+            .from(SYS_CONFIG)
+            .where(SYS_CONFIG.CONFIG_NAME.like(query.getKeywords(), StrUtil::isNotEmpty));
         Page<SysConfig> paginate = mapper.paginate(query.buildPage(), qw);
         return PageData.pageAs(paginate, (config) -> converter.convert(config, SysConfigVo.class));
     }
@@ -123,9 +126,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             return false;
         }
         QueryWrapper qw = QueryWrapper.create()
-                .select(SYS_CONFIG.CONFIG_KEY)
-                .from(SYS_CONFIG)
-                .where(SYS_CONFIG.ID.in(ids));
+            .select(SYS_CONFIG.CONFIG_KEY)
+            .from(SYS_CONFIG)
+            .where(SYS_CONFIG.ID.in(ids));
         List<String> configKeys = mapper.selectListByQueryAs(qw, String.class);
         boolean result = this.removeByIds(ids);
         if (result) {
@@ -137,13 +140,13 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 
     private void checkConfigKeyUnique(Long configId, String configKey) {
         QueryWrapper qw = QueryWrapper.create()
-                .select(SYS_CONFIG.DEFAULT_COLUMNS)
-                .from(SYS_CONFIG)
-                .where(SYS_CONFIG.CONFIG_KEY.eq(configKey));
+            .select(SYS_CONFIG.DEFAULT_COLUMNS)
+            .from(SYS_CONFIG)
+            .where(SYS_CONFIG.CONFIG_KEY.eq(configKey));
         SysConfig sysConfig = mapper.selectOneByQuery(qw);
         AssertUtils.isTrue(
-                ObjUtil.isNotNull(sysConfig) && ObjUtil.notEquals(sysConfig.getId(), configId),
-                "参数键名重复"
+            ObjUtil.isNotNull(sysConfig) && ObjUtil.notEquals(sysConfig.getId(), configId),
+            "参数键名重复"
         );
     }
 }
