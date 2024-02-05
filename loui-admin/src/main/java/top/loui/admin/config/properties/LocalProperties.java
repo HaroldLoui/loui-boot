@@ -24,4 +24,9 @@ public class LocalProperties {
      * 本地缓存全局过期时间单位
      */
     private TimeUnit unit = TimeUnit.SECONDS;
+
+    /**
+     * 是否打印日志
+     */
+    private boolean printLog = false;
 }
