@@ -12,14 +12,20 @@ import top.loui.admin.exceptions.BusinessException;
 
 import java.lang.reflect.Method;
 
+/**
+ * 处理缓存类型抽象类
+ */
 public abstract class AbstractCacheTypeHandler {
 
+    /**
+     * 处理方法
+     */
     public abstract Object handler(ProceedingJoinPoint joinPoint) throws Throwable;
 
     /**
      * 获取缓存的键名称
      */
-    protected String getKey(ProceedingJoinPoint joinPoint) throws Throwable {
+    protected String getKey(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         CacheSave annotation = method.getAnnotation(CacheSave.class);

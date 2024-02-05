@@ -12,6 +12,9 @@ import top.loui.admin.utils.RedisUtils;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 二级缓存处理
+ */
 @RequiredArgsConstructor
 @Component("BOTH")
 public class BothCacheTypeHandler extends AbstractCacheTypeHandler {

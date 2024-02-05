@@ -10,6 +10,9 @@ import top.loui.admin.common.LocalCacheWrapper;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 本地缓存处理
+ */
 @RequiredArgsConstructor
 @Component("LOCAL")
 public class LocalCacheTypeHandler extends AbstractCacheTypeHandler {

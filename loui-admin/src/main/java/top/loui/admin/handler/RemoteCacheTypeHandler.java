@@ -10,6 +10,9 @@ import top.loui.admin.utils.RedisUtils;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 远程缓存处理
+ */
 @RequiredArgsConstructor
 @Component("REMOTE")
 public class RemoteCacheTypeHandler extends AbstractCacheTypeHandler {

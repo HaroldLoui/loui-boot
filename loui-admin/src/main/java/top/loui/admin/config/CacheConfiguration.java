@@ -43,7 +43,12 @@ public class CacheConfiguration {
                     long nanos = wrapper.unit().toNanos(wrapper.expire());
                     // 相等则已全局配置为准
                     long times = nanos == 0L ? globalNanos : Math.max(nanos, -1L);
-                    log.info(StrUtil.format("s: {}, wrapper: {}, time：{}", s, JsonUtils.toJsonString(wrapper), Duration.ofNanos(times).toSeconds()));
+                    // 记录日志
+                    if (localProperties.isPrintLog()) {
+                        String object = JsonUtils.toJsonString(wrapper.object());
+                        long expireTime = Duration.ofNanos(times).toSeconds();
+                        log.info(StrUtil.format("key: {}, value: {}, expireTime: {}", s, object, expireTime));
+                    }
                     return times;
                 }
 
@@ -60,7 +65,11 @@ public class CacheConfiguration {
                  */
                 @Override
                 public long expireAfterRead(String s, LocalCacheWrapper wrapper, long l, @NonNegative long l1) {
-                    log.info(StrUtil.format("s: {}, wrapper: {}, time: {}", s, JsonUtils.toJsonString(wrapper), Duration.ofNanos(l1).toSeconds()));
+                    if (localProperties.isPrintLog()) {
+                        String object = JsonUtils.toJsonString(wrapper.object());
+                        long expireTime = Duration.ofNanos(l1).toSeconds();
+                        log.info(StrUtil.format("key: {}, value: {}, expireTime: {}", s, object, expireTime));
+                    }
                     return l1;
                 }
             })
