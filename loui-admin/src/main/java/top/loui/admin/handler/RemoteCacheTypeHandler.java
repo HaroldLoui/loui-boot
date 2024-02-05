@@ -6,6 +6,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import top.loui.admin.annotations.CacheSave;
 import top.loui.admin.config.properties.RemoteProperties;
+import top.loui.admin.utils.AspectUtils;
 import top.loui.admin.utils.RedisUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ public class RemoteCacheTypeHandler extends AbstractCacheTypeHandler {
 
     @Override
     public Object handler(ProceedingJoinPoint joinPoint) throws Throwable {
-        final String key = getKey(joinPoint);
+        final String key = AspectUtils.parseCacheKey(joinPoint, CacheSave.class, CacheSave::key, CacheSave::name);
         if (RedisUtils.hasKey(key)) {
             return RedisUtils.getCacheObject(key);
         }

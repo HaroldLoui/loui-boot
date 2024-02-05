@@ -40,6 +40,12 @@ public class SysConfigController extends BaseController {
         return configService.selectValueByConfigKey(key);
     }
 
+    @SaIgnore
+    @PutMapping("/cache")
+    public String cachePut(@RequestParam String key) {
+        return configService.putCacheKey(key);
+    }
+
     /**
      * 系统配置分页列表
      *

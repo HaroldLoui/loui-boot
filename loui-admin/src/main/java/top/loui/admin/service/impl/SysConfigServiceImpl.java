@@ -11,6 +11,7 @@ import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.springframework.stereotype.Service;
 import top.loui.admin.annotations.CacheSave;
+import top.loui.admin.annotations.CacheUpdate;
 import top.loui.admin.common.page.PageData;
 import top.loui.admin.domain.SysConfig;
 import top.loui.admin.domain.bo.SysConfigBo;
@@ -61,6 +62,12 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         // }
         // RedisUtils.setCacheObject(key, value);
         return value;
+    }
+
+    @CacheUpdate(name = "sys_config:", key = "#key", cacheType = CacheType.BOTH)
+    @Override
+    public String putCacheKey(String key) {
+        return "234";
     }
 
     /**

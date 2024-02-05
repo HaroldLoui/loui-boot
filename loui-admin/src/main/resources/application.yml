@@ -32,9 +32,9 @@ crypto:
 
 cache:
   local:
-    expire: 150
+    expire: 30
     unit: seconds
     print-log: true
   remote:
-    expire: 300
+    expire: 60
     unit: seconds

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import top.loui.admin.annotations.CacheSave;
 import top.loui.admin.common.LocalCacheWrapper;
 import top.loui.admin.config.properties.RemoteProperties;
+import top.loui.admin.utils.AspectUtils;
 import top.loui.admin.utils.RedisUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -24,11 +25,11 @@ public class BothCacheTypeHandler extends AbstractCacheTypeHandler {
 
     @Override
     public Object handler(ProceedingJoinPoint joinPoint) throws Throwable {
-        final String key = getKey(joinPoint);
+        final String key = AspectUtils.parseCacheKey(joinPoint, CacheSave.class, CacheSave::key, CacheSave::name);
         // 先从本地级缓存中获取
         LocalCacheWrapper existWrapper = caffeineCache.getIfPresent(key);
         if (existWrapper != null) {
-            return existWrapper.object();
+            return existWrapper.getObject();
         }
         MethodSignature signature  = (MethodSignature) joinPoint.getSignature();
         CacheSave annotation = signature.getMethod().getAnnotation(CacheSave.class);

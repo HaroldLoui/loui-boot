@@ -1,14 +1,31 @@
 package top.loui.admin.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.concurrent.TimeUnit;
 
 /**
  * 本地缓存对象包装器
- *
- * @param expire 缓存过期时间
- * @param unit   缓存过期时间单位
- * @param object 缓存对象
  */
-public record LocalCacheWrapper(long expire, TimeUnit unit, Object object) {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class LocalCacheWrapper {
 
+    /**
+     * 缓存过期时间
+     */
+    private long expire;
+
+    /**
+     * 缓存过期时间单位
+     */
+    private TimeUnit unit;
+
+    /**
+     * 缓存对象
+     */
+    private Object object;
 }

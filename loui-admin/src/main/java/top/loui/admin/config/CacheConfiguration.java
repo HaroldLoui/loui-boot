@@ -40,14 +40,14 @@ public class CacheConfiguration {
                     TimeUnit globalExpireUnit = localProperties.getUnit();
                     long globalNanos = globalExpireUnit.toNanos(globalExpire);
                     // 单个key配置的过期时间
-                    long nanos = wrapper.unit().toNanos(wrapper.expire());
+                    long nanos = wrapper.getUnit().toNanos(wrapper.getExpire());
                     // 相等则已全局配置为准
                     long times = nanos == 0L ? globalNanos : Math.max(nanos, -1L);
                     // 记录日志
                     if (localProperties.isPrintLog()) {
-                        String object = JsonUtils.toJsonString(wrapper.object());
+                        String object = JsonUtils.toJsonString(wrapper.getObject());
                         long expireTime = Duration.ofNanos(times).toSeconds();
-                        log.info(StrUtil.format("key: {}, value: {}, expireTime: {}", s, object, expireTime));
+                        log.info(StrUtil.format("Save ==> key: {}, value: {}, expireTime: {}", s, object, expireTime));
                     }
                     return times;
                 }
@@ -57,6 +57,12 @@ public class CacheConfiguration {
                  */
                 @Override
                 public long expireAfterUpdate(String s, LocalCacheWrapper wrapper, long l, @NonNegative long l1) {
+                    // 记录日志
+                    if (localProperties.isPrintLog()) {
+                        String object = JsonUtils.toJsonString(wrapper.getObject());
+                        long expireTime = Duration.ofNanos(l1).toSeconds();
+                        log.info(StrUtil.format("Edit ==> key: {}, value: {}, expireTime: {}", s, object, expireTime));
+                    }
                     return l1;
                 }
 
@@ -66,9 +72,9 @@ public class CacheConfiguration {
                 @Override
                 public long expireAfterRead(String s, LocalCacheWrapper wrapper, long l, @NonNegative long l1) {
                     if (localProperties.isPrintLog()) {
-                        String object = JsonUtils.toJsonString(wrapper.object());
+                        String object = JsonUtils.toJsonString(wrapper.getObject());
                         long expireTime = Duration.ofNanos(l1).toSeconds();
-                        log.info(StrUtil.format("key: {}, value: {}, expireTime: {}", s, object, expireTime));
+                        log.info(StrUtil.format("Read ==> key: {}, value: {}, expireTime: {}", s, object, expireTime));
                     }
                     return l1;
                 }
