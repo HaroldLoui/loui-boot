@@ -1,6 +1,7 @@
 package top.loui.admin.annotations;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import top.loui.admin.common.NotEqualZeroValidator;
 
 import java.lang.annotation.Documented;
@@ -18,4 +19,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface NotEqualZero {
 
     String message() default "过期时间不能设置为0";
+
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload>[] payload() default { };
 }
