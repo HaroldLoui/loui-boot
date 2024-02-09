@@ -2,7 +2,7 @@ package top.loui.admin.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import top.loui.admin.common.TreeNode;
+import top.loui.admin.common.tree.TreeNode;
 
 import java.io.Serial;
 import java.io.Serializable;

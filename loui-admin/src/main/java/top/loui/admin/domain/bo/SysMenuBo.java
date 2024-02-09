@@ -3,7 +3,7 @@ package top.loui.admin.domain.bo;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import top.loui.admin.domain.SysMenu;
-import top.loui.admin.domain.vo.menu.SysMenuTableVo;
+import top.loui.admin.enums.MenuType;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -66,7 +66,7 @@ public class SysMenuBo implements Serializable {
     /**
      * 菜单类型
      */
-    private SysMenuTableVo.Type type;
+    private MenuType menuType;
 
     /**
      * 菜单是否可见(1:显示;0:隐藏)

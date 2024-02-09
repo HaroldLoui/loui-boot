@@ -2,12 +2,12 @@ package top.loui.admin.common;
 
 import org.springframework.http.HttpStatus;
 
-public record Result<T>(String code, String msg, T data) {
+public record Result<T>(int code, String msg, T data) {
 
-    public static final String SUCCESS_CODE = String.valueOf(HttpStatus.OK.value());
+    public static final int SUCCESS_CODE = HttpStatus.OK.value();
     public static final String SUCCESS_MESSAGE = HttpStatus.OK.getReasonPhrase();
 
-    public static final String FAILED_CODE = String.valueOf(HttpStatus.BAD_REQUEST.value());
+    public static final int FAILED_CODE = HttpStatus.BAD_REQUEST.value();
     public static final String FAILED_MESSAGE = HttpStatus.BAD_REQUEST.getReasonPhrase();
 
     public static <T> Result<T> ok() {
@@ -34,7 +34,7 @@ public record Result<T>(String code, String msg, T data) {
         return new Result<>(FAILED_CODE, msg, data);
     }
 
-    public static <T> Result<T> fail(String code, String msg, T data) {
+    public static <T> Result<T> fail(int code, String msg, T data) {
         return new Result<>(code, msg, data);
     }
 }

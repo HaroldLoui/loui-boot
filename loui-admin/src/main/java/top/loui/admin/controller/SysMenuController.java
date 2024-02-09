@@ -5,10 +5,13 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.loui.admin.common.BaseController;
 import top.loui.admin.domain.bo.SysMenuBo;
@@ -114,5 +117,42 @@ public class SysMenuController extends BaseController {
             roleMenuService.removeCachePermList();
         }
         return result ? ok(DELETE_SUCCESS) : fail(DELETE_FAILED);
+    }
+
+    /**
+     * 菜单详情
+     *
+     * @param id 菜单ID
+     */
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id) {
+        SysMenuTableVo menuVo = menuService.form(id);
+        return ok(QUERY_SUCCESS, menuVo);
+    }
+
+    /**
+     * 修改菜单
+     *
+     * @param id 菜单ID
+     */
+    @SaCheckPermission("sys:menu:edit")
+    @PutMapping("/{id}")
+    public String edit(@RequestBody SysMenuBo bo, @PathVariable Long id) {
+        bo.setId(id);
+        boolean result = menuService.edit(bo);
+        return result ? ok(UPDATE_SUCCESS) : fail(UPDATE_FAILED);
+    }
+
+    /**
+     * 修改菜单显示状态
+     *
+     * @param menuId  菜单ID
+     * @param visible 显示状态(1:显示;0:隐藏)
+     */
+    @SaCheckPermission("sys:menu:edit")
+    @PatchMapping("/{menuId}")
+    public String visible(@PathVariable Long menuId, @RequestParam Integer visible) {
+        boolean result = menuService.visible(menuId, visible);
+        return result ? ok(UPDATE_SUCCESS) : fail(UPDATE_FAILED);
     }
 }

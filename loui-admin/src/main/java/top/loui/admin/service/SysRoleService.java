@@ -75,12 +75,4 @@ public interface SysRoleService extends IService<SysRole> {
      * @return 是否成功
      */
     boolean status(Long roleId, Integer status);
-
-    /**
-     * 获取菜单绑定的角色列表
-     *
-     * @param menuId 菜单ID
-     * @return 角色列表
-     */
-    List<String> getRolesByMenuId(Long menuId);
 }

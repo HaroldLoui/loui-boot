@@ -23,8 +23,12 @@ import top.loui.admin.domain.bo.SysUserBo;
 import top.loui.admin.domain.query.SysUserQuery;
 import top.loui.admin.domain.vo.LoginUserVo;
 import top.loui.admin.domain.vo.SysUserVo;
+import top.loui.admin.domain.vo.UserImportVO;
+import top.loui.admin.easyexcel.UserImportListener;
 import top.loui.admin.service.SysUserService;
+import top.loui.admin.utils.ExcelUtils;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -114,8 +118,6 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("/_export")
     public void export(SysUserQuery query, HttpServletResponse response) {
-        query.setPageNum(1);
-        query.setPageSize(Integer.MAX_VALUE);
         userService.export(query, response);
     }
 
@@ -123,8 +125,8 @@ public class SysUserController extends BaseController {
      * 用户导入模板下载
      */
     @GetMapping("/template")
-    public void template(HttpServletResponse response) {
-
+    public void template(HttpServletResponse response) throws IOException {
+        userService.downloadTemplate(response);
     }
 
     /**
@@ -134,8 +136,10 @@ public class SysUserController extends BaseController {
      * @param file   导入文件
      */
     @PostMapping("/_import")
-    public String export(@RequestParam Long deptId, @RequestPart MultipartFile file) {
-        return ok("导入成功");
+    public String export(@RequestParam Long deptId, @RequestPart MultipartFile file) throws IOException {
+        UserImportListener listener = new UserImportListener(deptId);
+        String msg = ExcelUtils.importExcel(file.getInputStream(), UserImportVO.class, listener);
+        return ok(msg);
     }
 
     /**

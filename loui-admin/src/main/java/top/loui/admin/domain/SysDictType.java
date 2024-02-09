@@ -4,11 +4,10 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import top.loui.admin.config.id.MySnowFlakeIdGenerator;
+import top.loui.admin.domain.vo.SysDictTypeVo;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,10 +19,8 @@ import java.time.LocalDateTime;
  * @author hanjinfeng
  * @since 2024-01-24
  */
+@AutoMapper(target = SysDictTypeVo.class, reverseConvertGenerate = false)
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(value = "sys_dict_type")
 public class SysDictType implements Serializable {
 
@@ -49,7 +46,7 @@ public class SysDictType implements Serializable {
     /**
      * 状态(0:正常;1:禁用)
      */
-    private Boolean status;
+    private Integer status;
 
     /**
      * 备注

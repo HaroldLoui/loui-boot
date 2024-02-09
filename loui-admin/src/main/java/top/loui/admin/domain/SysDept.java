@@ -4,11 +4,11 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import top.loui.admin.common.tree.FatherSonRelationship;
 import top.loui.admin.config.id.MySnowFlakeIdGenerator;
+import top.loui.admin.domain.vo.SysDeptVo;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,12 +20,10 @@ import java.time.LocalDateTime;
  * @author hanjinfeng
  * @since 2024-01-24
  */
+@AutoMapper(target = SysDeptVo.class, reverseConvertGenerate = false)
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(value = "sys_dept")
-public class SysDept implements Serializable {
+public class SysDept implements Serializable, FatherSonRelationship {
 
     @Serial
     private static final long serialVersionUID = 636388784227662921L;
@@ -42,7 +40,7 @@ public class SysDept implements Serializable {
     private String name;
 
     /**
-     * 父节点id
+     * 父部门ID
      */
     private Long parentId;
 

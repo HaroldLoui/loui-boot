@@ -4,20 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "dev": "vite serve --mode development",
     "build:prod": "vite build --mode production && vue-tsc --noEmit",
-    "prepare": "husky install",
     "lint:eslint": "eslint  --fix --ext .ts,.js,.vue ./src ",
     "lint:prettier": "prettier --write \"**/*.{js,cjs,ts,json,tsx,css,less,scss,vue,html,md}\"",
     "lint:stylelint": "stylelint  \"**/*.{css,scss,vue}\" --fix",
-    "lint:lint-staged": "lint-staged",
-    "commit": "git-cz"
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-git"
-    }
+    "lint:lint-staged": "lint-staged"
   },
   "lint-staged": {
     "*.{js,ts}": [
@@ -79,15 +71,12 @@
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "autoprefixer": "^10.4.16",
-    "commitizen": "^4.3.0",
-    "cz-git": "^1.8.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.20.0",
     "fast-glob": "^3.3.2",
-    "husky": "^8.0.3",
     "lint-staged": "^13.3.0",
     "postcss": "^8.4.33",
     "postcss-html": "^1.5.0",

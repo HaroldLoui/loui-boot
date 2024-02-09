@@ -62,7 +62,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             .select(QueryMethods.distinct(SYS_ROLE.CODE))
             .from(SYS_USER_ROLE.as("ur"))
             .leftJoin(SYS_ROLE).as("r").on(SYS_USER_ROLE.ROLE_ID.eq(SYS_ROLE.ID))
-            .where(SYS_USER_ROLE.USER_ID.eq(userId));
+            .where(SYS_USER_ROLE.USER_ID.eq(userId))
+            .and(SYS_ROLE.CODE.isNotNull());
         List<String> roles = mapper.selectListByQueryAs(qw, String.class);
         RedisUtils.setCacheObject(key, roles);
         return roles;
@@ -79,8 +80,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 构造查询条件
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_ROLE.DEFAULT_COLUMNS)
-            .where(SYS_ROLE.NAME.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords()))
-                .or(SYS_ROLE.CODE.like(query.getKeywords(), StrUtil.isNotEmpty(query.getKeywords())))
+            .from(SYS_ROLE)
+            .where(SYS_ROLE.NAME.like(query.getKeywords(), StrUtil::isNotEmpty)
+                .or(SYS_ROLE.CODE.like(query.getKeywords(), StrUtil::isNotEmpty))
             );
         // 查询分页数据
         Page<SysRole> page = mapper.paginate(query.buildPage(), qw);
@@ -98,6 +100,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 构造查询条件
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_ROLE.ID.as("value"), SYS_ROLE.NAME.as("label"))
+            .from(SYS_ROLE)
             .where(SYS_ROLE.DATA_SCOPE.ne(0));
         // 查询并返回数据
         return mapper.selectListByQueryAs(qw, DropdownListVo.class);
@@ -149,27 +152,22 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      */
     @Override
     public boolean menus(Long roleId, List<Long> menuIds) {
-        if (CollUtil.isEmpty(menuIds)) {
-            return true;
-        }
-        List<SysRoleMenu> list = menuIds.stream()
-            .map((menuId) -> {
-                SysRoleMenu roleMenu = new SysRoleMenu();
-                roleMenu.setMenuId(menuId);
-                roleMenu.setRoleId(roleId);
-                return roleMenu;
-            })
-            .toList();
-        // 删除相关缓存
-        List<Long> menuIds1 = roleMenuService.selectMenuIdsByRoleId(roleId);
-        if (CollUtil.isNotEmpty(menuIds1)) {
-            List<String> keys = menuIds1.stream().map(id -> "sys_menu:roles:" + id).toList();
-            RedisUtils.delete(keys);
-        }
-        return Db.tx(() ->
-            roleMenuService.remove(SYS_ROLE_MENU.ROLE_ID.eq(roleId)) &&
-            roleMenuService.saveBatch(list)
-        );
+        return Db.tx(() -> {
+            boolean remove = roleMenuService.remove(SYS_ROLE_MENU.ROLE_ID.eq(roleId));
+            if (CollUtil.isEmpty(menuIds)) {
+                return remove;
+            }
+            return remove && roleMenuService.saveBatch(
+                menuIds.stream()
+                    .map((menuId) -> {
+                        SysRoleMenu roleMenu = new SysRoleMenu();
+                        roleMenu.setMenuId(menuId);
+                        roleMenu.setRoleId(roleId);
+                        return roleMenu;
+                    })
+                    .toList()
+            );
+        });
     }
 
     /**
@@ -185,28 +183,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             .set(SYS_ROLE.STATUS, status)
             .where(SYS_ROLE.ID.eq(roleId))
             .update();
-    }
-
-    /**
-     * 获取菜单绑定的角色列表
-     *
-     * @param menuId 菜单ID
-     * @return 角色列表
-     */
-    @Override
-    public List<String> getRolesByMenuId(Long menuId) {
-        final String key = "sys_menu:roles:" + menuId;
-        if (RedisUtils.hasKey(key)) {
-            return RedisUtils.getCacheObject(key);
-        }
-        QueryWrapper qw = QueryWrapper.create()
-            .select(SYS_ROLE.CODE)
-            .from(SYS_ROLE_MENU.as("rm"))
-            .leftJoin(SYS_ROLE).as("r").on(SYS_ROLE.ID.eq(SYS_ROLE_MENU.ROLE_ID))
-            .where(SYS_ROLE_MENU.MENU_ID.eq(menuId));
-        List<String> roles = mapper.selectListByQueryAs(qw, String.class);
-        RedisUtils.setCacheObject(key, roles);
-        return roles;
     }
 
     /**

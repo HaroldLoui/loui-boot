@@ -9,6 +9,8 @@ import top.loui.admin.domain.query.SysUserQuery;
 import top.loui.admin.domain.vo.LoginUserVo;
 import top.loui.admin.domain.vo.SysUserVo;
 
+import java.io.IOException;
+
 /**
  * 系统用户Service层
  */
@@ -55,6 +57,11 @@ public interface SysUserService extends IService<SysUser> {
      * @param query 查询条件
      */
     void export(SysUserQuery query, HttpServletResponse response);
+
+    /**
+     * 用户导入模板下载
+     */
+    void downloadTemplate(HttpServletResponse response) throws IOException;
 
     /**
      * 修改用户密码

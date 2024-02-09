@@ -26,7 +26,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     const { code, msg } = response.data;
-    if (code === "00000") {
+    if (code === 200) {
       return response.data;
     }
     // 响应数据为二进制流处理(Excel导出)
@@ -41,7 +41,7 @@ service.interceptors.response.use(
     if (error.response.data) {
       const { code, msg } = error.response.data;
       // token 过期,重新登录
-      if (code === "A0230") {
+      if (code === 401) {
         ElMessageBox.confirm("当前页面已失效，请重新登录", "提示", {
           confirmButtonText: "确定",
           type: "warning",

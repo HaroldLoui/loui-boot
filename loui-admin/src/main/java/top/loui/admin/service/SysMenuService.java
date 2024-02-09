@@ -63,4 +63,17 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param id 菜单ID
      */
     SysMenuTableVo form(Long id);
+
+    /**
+     * 修改菜单
+     */
+    boolean edit(SysMenuBo bo);
+
+    /**
+     * 修改菜单显示状态
+     *
+     * @param menuId  菜单ID
+     * @param visible 显示状态(1:显示;0:隐藏)
+     */
+    boolean visible(Long menuId, Integer visible);
 }
