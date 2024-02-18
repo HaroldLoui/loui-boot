@@ -7,7 +7,7 @@ import com.mybatisflex.annotation.Table;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMapping;
 import lombok.Data;
-import top.loui.admin.common.tree.FatherSonRelationship;
+import top.loui.admin.common.tree.BuildTree;
 import top.loui.admin.config.id.MySnowFlakeIdGenerator;
 import top.loui.admin.domain.vo.menu.SysMenuTableVo;
 
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @AutoMapper(target = SysMenuTableVo.class, reverseConvertGenerate = false)
 @Data
 @Table(value = "sys_menu")
-public class SysMenu implements Serializable, FatherSonRelationship {
+public class SysMenu implements Serializable, BuildTree {
 
     @Serial
     private static final long serialVersionUID = -8772265654283963375L;

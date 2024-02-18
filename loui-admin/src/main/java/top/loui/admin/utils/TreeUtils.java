@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.util.ObjUtil;
-import top.loui.admin.common.tree.FatherSonRelationship;
+import top.loui.admin.common.tree.BuildTree;
 import top.loui.admin.common.tree.TreeNode;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class TreeUtils {
      * @param <E>  原对象
      * @return 树形结构数据
      */
-    public static <R extends TreeNode<R>, E extends FatherSonRelationship> List<R> buildTreeNode(List<E> list, Function<E, R> func) {
+    public static <R extends TreeNode<R>, E extends BuildTree> List<R> buildTreeNode(List<E> list, Function<E, R> func) {
         return buildTreeNode(list, func, null);
     }
 
@@ -46,11 +46,11 @@ public class TreeUtils {
      * @param <E>  原对象
      * @return 树形结构数据
      */
-    public static <R extends TreeNode<R>, E extends FatherSonRelationship> List<R> buildTreeNode(List<E> list, Function<E, R> func, Comparator<R> comp) {
+    public static <R extends TreeNode<R>, E extends BuildTree> List<R> buildTreeNode(List<E> list, Function<E, R> func, Comparator<R> comp) {
         if (CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }
-        list.sort(Comparator.comparing(FatherSonRelationship::getParentId));
+        list.sort(Comparator.comparing(BuildTree::getParentId));
         List<R> results = new ArrayList<>();
         for (E e : list) {
             if (SET.contains(e.getId())) {
@@ -79,7 +79,7 @@ public class TreeUtils {
      * @param <E>  原对象
      * @return 树形结构数据
      */
-    private static <R extends TreeNode<R>, E extends FatherSonRelationship> List<R> buildTreeNode(Long id, List<E> list, Function<E, R> func, Comparator<R> comp) {
+    private static <R extends TreeNode<R>, E extends BuildTree> List<R> buildTreeNode(Long id, List<E> list, Function<E, R> func, Comparator<R> comp) {
         if (ObjUtil.isNull(id) || CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }

@@ -4,7 +4,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMapping;
 import io.github.linpeilie.annotations.AutoMappings;
 import lombok.Data;
-import top.loui.admin.common.tree.FatherSonRelationship;
+import top.loui.admin.common.tree.BuildTree;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @AutoMapper(target = RouteVo.class, reverseConvertGenerate = false)
 @Data
-public class SysMenuRolesVo implements Serializable, FatherSonRelationship {
+public class SysMenuRolesVo implements Serializable, BuildTree {
 
     @Serial
     private static final long serialVersionUID = -7535229701116251426L;

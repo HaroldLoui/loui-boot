@@ -6,7 +6,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import top.loui.admin.common.tree.FatherSonRelationship;
+import top.loui.admin.common.tree.BuildTree;
 import top.loui.admin.config.id.MySnowFlakeIdGenerator;
 import top.loui.admin.domain.vo.SysDeptVo;
 
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @AutoMapper(target = SysDeptVo.class, reverseConvertGenerate = false)
 @Data
 @Table(value = "sys_dept")
-public class SysDept implements Serializable, FatherSonRelationship {
+public class SysDept implements Serializable, BuildTree {
 
     @Serial
     private static final long serialVersionUID = 636388784227662921L;
