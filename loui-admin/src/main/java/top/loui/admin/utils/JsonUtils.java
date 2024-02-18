@@ -188,4 +188,15 @@ public class JsonUtils {
             return Collections.emptyMap();
         }
     }
+
+    /**
+     *  将json字符串解析成指定类型的对象列表
+     *
+     * @return map
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> parseArray(String json) {
+        JacksonJsonParser parser = new JacksonJsonParser(MAPPER);
+        return (List<T>) parser.parseList(json);
+    }
 }
