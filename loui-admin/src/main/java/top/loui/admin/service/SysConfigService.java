@@ -26,8 +26,6 @@ public interface SysConfigService extends IService<SysConfig> {
      */
     String selectValueByConfigKey(String key);
 
-    String putCacheKey(String key);
-
     /**
      * 配置分页列表
      *

@@ -10,14 +10,11 @@ import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.springframework.stereotype.Service;
-import top.loui.admin.annotations.CacheSave;
-import top.loui.admin.annotations.CacheUpdate;
 import top.loui.admin.common.page.PageData;
 import top.loui.admin.domain.SysConfig;
 import top.loui.admin.domain.bo.SysConfigBo;
 import top.loui.admin.domain.query.SysConfigQuery;
 import top.loui.admin.domain.vo.SysConfigVo;
-import top.loui.admin.enums.CacheType;
 import top.loui.admin.mapper.SysConfigMapper;
 import top.loui.admin.service.SysConfigService;
 import top.loui.admin.utils.AssertUtils;
@@ -45,29 +42,22 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
      * @param configKey 配置键
      * @return value
      */
-    @CacheSave(name = "sys_config:", key = "#configKey", cacheType = CacheType.BOTH)
     @Override
     public String selectValueByConfigKey(String configKey) {
-        // final String key = "sys_config:" + configKey;
-        // if (RedisUtils.hasKey(key)) {
-        //     return RedisUtils.getCacheObject(key);
-        // }
+        final String key = "sys_config:" + configKey;
+        if (RedisUtils.hasKey(key)) {
+            return RedisUtils.getCacheObject(key);
+        }
         QueryWrapper qw = QueryWrapper.create()
             .select(SYS_CONFIG.CONFIG_VALUE)
             .from(SYS_CONFIG)
             .where(SYS_CONFIG.CONFIG_KEY.eq(configKey));
         String value = mapper.selectObjectByQueryAs(qw, String.class);
-        // if (ObjUtil.isNull(value)) {
-        //     return null;
-        // }
-        // RedisUtils.setCacheObject(key, value);
+        if (ObjUtil.isNull(value)) {
+            return null;
+        }
+        RedisUtils.setCacheObject(key, value);
         return value;
-    }
-
-    @CacheUpdate(name = "sys_config:", key = "#key", cacheType = CacheType.BOTH)
-    @Override
-    public String putCacheKey(String key) {
-        return "234";
     }
 
     /**

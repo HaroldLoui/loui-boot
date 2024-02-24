@@ -2,7 +2,6 @@ package top.loui.admin.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaIgnore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.loui.admin.common.BaseController;
 import top.loui.admin.common.page.PageData;
@@ -33,18 +31,6 @@ import java.util.Arrays;
 public class SysConfigController extends BaseController {
 
     private final SysConfigService configService;
-
-    @SaIgnore
-    @GetMapping("/cache")
-    public String cache(@RequestParam String key) {
-        return configService.selectValueByConfigKey(key);
-    }
-
-    @SaIgnore
-    @PutMapping("/cache")
-    public String cachePut(@RequestParam String key) {
-        return configService.putCacheKey(key);
-    }
 
     /**
      * 系统配置分页列表
