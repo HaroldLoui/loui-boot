@@ -32,7 +32,7 @@ public class CodeGen {
         }
     }
 
-    private static final String BASE_PATH = "C:\\Devlopment\\workspace\\loui-boot\\loui-admin\\src\\main\\";
+    private static final String BASE_PATH = "C:\\Devlopment\\workspace\\IdeaProjects\\loui-boot\\loui-admin\\src\\main\\";
 
     public static GlobalConfig createGlobalConfigUseStyle1() {
         //创建配置内容
@@ -53,14 +53,15 @@ public class CodeGen {
         //设置表前缀和只生成哪些表
         // globalConfig.setTablePrefix("market_");
         final String[] tableNames = {
-            "sys_dept"
-            ,"sys_dict"
-            ,"sys_dict_type"
-            ,"sys_menu"
-            ,"sys_role"
-            ,"sys_role_menu"
+            "t_point_task"
+            // "sys_dept"
+            // ,"sys_dict"
+            // ,"sys_dict_type"
+            // ,"sys_menu"
+            // ,"sys_role"
+            // ,"sys_role_menu"
             // ,"sys_user"
-            ,"sys_user_role"
+            // ,"sys_user_role"
         };
         globalConfig.setGenerateTable(tableNames);
 
@@ -82,15 +83,17 @@ public class CodeGen {
         globalConfig.setMapperXmlOverwriteEnable(true);
         globalConfig.setMapperXmlGenerateEnable(true);
         // 生成TableRef
-        // globalConfig.setTableDefOverwriteEnable(true);
-        // globalConfig.setTableDefGenerateEnable(true);
+        globalConfig.setTableDefOverwriteEnable(true);
+        globalConfig.setTableDefGenerateEnable(true);
+
+        globalConfig.setEntityJdkVersion(17);
 
         //可以单独配置某个列
         Map<String, ColumnConfig> map = new HashMap<>();
-        ColumnConfig logicDeleteConfig = new ColumnConfig();
-        logicDeleteConfig.setColumnName("deleted");
-        logicDeleteConfig.setLogicDelete(true);
-        map.put("deleted", logicDeleteConfig);
+        // ColumnConfig logicDeleteConfig = new ColumnConfig();
+        // logicDeleteConfig.setColumnName("deleted");
+        // logicDeleteConfig.setLogicDelete(true);
+        // map.put("deleted", logicDeleteConfig);
 
         ColumnConfig createTimeConfig = new ColumnConfig();
         createTimeConfig.setColumnName("create_time");
@@ -107,7 +110,7 @@ public class CodeGen {
         idConfig.setKeyType(KeyType.Generator);
         idConfig.setKeyValue(MySnowFlakeIdGenerator.KEY);
         idConfig.setPrimaryKey(true);
-        map.put("id", updateTimeConfig);
+        map.put("id", idConfig);
 
         globalConfig.setColumnConfigMap(map);
         return globalConfig;

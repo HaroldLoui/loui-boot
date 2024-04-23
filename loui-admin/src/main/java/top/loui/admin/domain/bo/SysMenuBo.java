@@ -66,7 +66,8 @@ public class SysMenuBo implements Serializable {
     /**
      * 菜单类型
      */
-    private MenuType menuType;
+    // @AutoMapping(target = "type", expression = "java(top.loui.admin.enums.MenuType.getValue(source.getMenuType()))")
+    private MenuType type;
 
     /**
      * 菜单是否可见(1:显示;0:隐藏)

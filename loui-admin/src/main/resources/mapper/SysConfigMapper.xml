@@ -15,8 +15,5 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
-    <sql id="Base_Column_List">
-        `id`, `config_name`, `config_key`, `config_value`, `config_type`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`
-    </sql>
 
 </mapper>
